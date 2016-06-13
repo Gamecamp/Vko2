@@ -3,20 +3,36 @@ using System.Collections;
 
 public class CameraFollow : MonoBehaviour {
 	
-	public GameObject player;
+	public Transform player;
 	Renderer playerRenderer;
 
-	public GameObject cube;
+	public Transform cube;
 	Renderer cubeRenderer;
 
-	public float distancemultip;
+	public float distanceMultiplier;
+
+	private Vector3 middlePoint;
+	private float distanceFromMiddlePoint;
+	private float distanceBetweenPlayers;
+	private float cameraDistance;
+	private float aspectRatio;
+	private float fov;
+	private float tanFov;
+
+	private float margin;
 
 	// Use this for initialization
 	void Start () {
-		playerRenderer = player.GetComponent<MeshRenderer> ();
-		cubeRenderer = cube.GetComponent<MeshRenderer> ();
+		//playerRenderer = player.GetComponent<MeshRenderer> ();
+		//cubeRenderer = cube.GetComponent<MeshRenderer> ();
+
+		aspectRatio = Screen.width / Screen.height;
+		tanFov = Mathf.Tan (Mathf.Deg2Rad * Camera.main.fieldOfView * 0.5f);
 	}
 
+
+	//  ** master branch Update version **
+	/*
 	// Update is called once per frame
 	void Update () {
 
@@ -46,4 +62,47 @@ public class CameraFollow : MonoBehaviour {
 
 			//transform.position = new Vector3 ((player.transform.position.x + cube.transform.position.x) / 2, Vector3.Distance(player.transform.position,cube.transform.position)*distancemultip, (player.transform.position.z + cube.transform.position.z) / 2);
 	}
+	*/
+
+	void Update() {
+
+		Vector3 vectorBetweenPlayers = cube.position - player.position;
+		middlePoint = player.position + 0.5f * vectorBetweenPlayers;
+
+		float xDistance = Mathf.Abs (vectorBetweenPlayers.x);
+		float zDistance = Mathf.Abs (vectorBetweenPlayers.z);
+
+		print ("xDistance = " + xDistance);
+		print ("zDistance = " + zDistance);
+
+		if (zDistance > xDistance) {
+			distanceMultiplier = 1.2f;
+			margin = 2f;
+		} else {
+			distanceMultiplier = 1f;
+			margin = 0f;
+		}
+
+		distanceBetweenPlayers = vectorBetweenPlayers.magnitude;
+		cameraDistance = (distanceBetweenPlayers / 2.0f / aspectRatio) / tanFov;
+
+		/*
+		float cameraHeightDistance = cameraDistance * 0.5625f;
+		print ("distance = " + cameraDistance);
+		print ("height = " + cameraHeightDistance);
+		*/
+
+		middlePoint = new Vector3 (middlePoint.x, (cameraDistance + margin) * distanceMultiplier, middlePoint.z);
+
+		if (middlePoint.y < 20) {
+			middlePoint = new Vector3 (middlePoint.x, 20, middlePoint.z);
+		}
+
+	}
+
+	void LateUpdate() {
+		transform.position = middlePoint;
+		//Vector3.Lerp(transform.position, middlePoint, Time.deltaTime * 5f);
+	}
+	
 }
