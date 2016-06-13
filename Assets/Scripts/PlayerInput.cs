@@ -11,6 +11,7 @@ public class PlayerInput : MonoBehaviour {
 	public float turnSpeed;
 	public float torque;
 	public float torqueDeccerelationMultiplier;
+	public float minimumSpeedForTurning;
 
 	// Use this for initialization
 	void Start () {
@@ -27,14 +28,19 @@ public class PlayerInput : MonoBehaviour {
 	void GetPlayerInput () {
 		if (Input.GetKey (playerAccelerateKey)) {
 			rigidbody.AddRelativeForce(new Vector3(torque, 0, 0));
-			Debug.Log ("Accelerating");
 		} else if (Input.GetKey (playerDeccerelateKey)) {
 			rigidbody.AddRelativeForce(new Vector3(-torque * torqueDeccerelationMultiplier, 0, 0));
-			Debug.Log ("Deccelerating");
+		}
+			
+		if (Mathf.Abs (transform.InverseTransformDirection (rigidbody.velocity).x) > minimumSpeedForTurning || Mathf.Abs (transform.InverseTransformDirection (rigidbody.velocity).z) > minimumSpeedForTurning) {
+			myRotation = Input.GetAxis ("Horizontal") * Time.deltaTime * turnSpeed;
+		} else {
+			print ("YAMAN");
+			myRotation = Input.GetAxis ("Horizontal") * Time.deltaTime * turnSpeed * (Mathf.Abs (transform.InverseTransformDirection (rigidbody.velocity).x));
 		}
 
-		myRotation = Input.GetAxis ("Horizontal") * Time.deltaTime * turnSpeed;
-		transform.Rotate (0, myRotation ,0);
+		transform.Rotate (0, myRotation, 0);
+
 
 	}
 }
