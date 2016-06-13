@@ -1,1 +1,1 @@
-ME WAS READ
+rb.AddForce (new Vector3 (Mathf.Cos(transform.eulerAngles.y * Mathf.Deg2Rad) * speed, 0, Mathf.Sin(transform.eulerAngles.y * Mathf.Deg2Rad) * speed));
