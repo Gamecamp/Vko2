@@ -20,6 +20,7 @@ public class CameraFollow : MonoBehaviour {
 	private float tanFov;
 
 	private float margin;
+	public float zoomSpeed;
 
 	// Use this for initialization
 	void Start () {
@@ -69,40 +70,25 @@ public class CameraFollow : MonoBehaviour {
 		Vector3 vectorBetweenPlayers = cube.position - player.position;
 		middlePoint = player.position + 0.5f * vectorBetweenPlayers;
 
-		float xDistance = Mathf.Abs (vectorBetweenPlayers.x);
+		//float xDistance = Mathf.Abs (vectorBetweenPlayers.x);
 		float zDistance = Mathf.Abs (vectorBetweenPlayers.z);
 
-		print ("xDistance = " + xDistance);
-		print ("zDistance = " + zDistance);
-
-		if (zDistance > xDistance) {
-			distanceMultiplier = 1.2f;
-			margin = 2f;
-		} else {
-			distanceMultiplier = 1f;
-			margin = 0f;
-		}
+		distanceMultiplier = 1 + zDistance / 90;
+		margin = 2f;
 
 		distanceBetweenPlayers = vectorBetweenPlayers.magnitude;
 		cameraDistance = (distanceBetweenPlayers / 2.0f / aspectRatio) / tanFov;
-
-		/*
-		float cameraHeightDistance = cameraDistance * 0.5625f;
-		print ("distance = " + cameraDistance);
-		print ("height = " + cameraHeightDistance);
-		*/
 
 		middlePoint = new Vector3 (middlePoint.x, (cameraDistance + margin) * distanceMultiplier, middlePoint.z);
 
 		if (middlePoint.y < 20) {
 			middlePoint = new Vector3 (middlePoint.x, 20, middlePoint.z);
 		}
-
 	}
 
 	void LateUpdate() {
 		transform.position = middlePoint;
-		//Vector3.Lerp(transform.position, middlePoint, Time.deltaTime * 5f);
+		//transform.position = Vector3.Lerp(transform.position, middlePoint, Time.deltaTime * zoomSpeed);
 	}
 	
 }
