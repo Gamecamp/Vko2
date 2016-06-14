@@ -48,10 +48,27 @@ public class PlayerInput : MonoBehaviour {
 	*/
 
 	void GetPlayerInput() {
-		rigidbody.drag = 0.4f;
+		rigidbody.drag = 0.6f;
 
 		if (Input.GetKey (playerAccelerateKey)) {
+//			if (Vector3.Angle (rigidbody.velocity, gameObject.transform.right) > 30) {
+//				rigidbody.AddRelativeForce(new Vector3(torque, 0, 0) + transform.right);
+//			}
+
+			if (!Input.GetKey (KeyCode.A) && !Input.GetKey (KeyCode.D)) {
+				//Vector3 velo = new Vector3 (rigidbody.velocity.x, rigidbody.velocity.y, rigidbody.velocity.z * 0.9f);
+				//Vector3 velo = transform.TransformDirection(rigidbody.velocity);
+				Vector3 velo = transform.InverseTransformDirection(rigidbody.velocity);
+				velo.z = velo.z * 0.98f;
+				rigidbody.velocity = transform.TransformDirection(velo);
+//				rigidbody.velocity = (new Vector3 (transform.InverseTransformDirection(rigidbody.velocity.x)
+//					, transform.InverseTransformDirection.(rigidbody.velocity.y),
+//					transform.InverseTransformDirection(rigidbody.velocity.z * 0.9f)));
+			}
+
 			rigidbody.AddRelativeForce(new Vector3(torque, 0, 0));
+
+
 		} else if (Input.GetKey (playerDeccerelateKey)) {
 			//rigidbody.AddRelativeForce(new Vector3(-torque * torqueDeccerelationMultiplier, 0, 0));
 			//rigidbody.AddRelativeForce(-(rigidbody.velocity * 0.4f));
@@ -63,9 +80,16 @@ public class PlayerInput : MonoBehaviour {
 		if (rigidbody.velocity.magnitude > minimumTurnVelocity.magnitude) {
 			transform.Rotate (0, myRotation, 0);
 		} 
+			
+		print (" angle = " + Vector3.Angle(rigidbody.velocity, gameObject.transform.right));
 
-		if (Vector3.Angle (transform.InverseTransformDirection(rigidbody.velocity), gameObject.transform.forward) > 90) {
-			print ("juuh");
+		if (Vector3.Angle (rigidbody.velocity, gameObject.transform.right) > 30) {
+
 		}
+
+		Debug.DrawRay (transform.position, rigidbody.velocity, Color.red);
+		Debug.DrawRay (transform.position, gameObject.transform.right * 5f, Color.green);
+
+		print ("velocity = " + rigidbody.velocity);
 	}
 }
