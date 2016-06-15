@@ -11,11 +11,15 @@ public class CheckPointChecker : MonoBehaviour {
 	int currentLap;
 	public int maxLap;
 
+	Scorekeeper scorekeeper;
+
 
 	// Use this for initialization
 	void Start () {
 		currentPoint = 0;
 		currentLap = 0;
+		scorekeeper = GameObject.Find ("Scorekeeper").GetComponent<Scorekeeper> ();
+		maxPoint = checkPoints.Length;
 	}
 	
 	// Update is called once per frame
@@ -23,11 +27,32 @@ public class CheckPointChecker : MonoBehaviour {
 		
 	}
 
+	public int GetCurrentLap() {
+		return currentLap;
+	}
+
 	void OnTriggerEnter(Collider col) {
-		print ("woop woop");
-		if(col.gameObject.Equals(checkPoints[currentPoint])) {
-			print ("score");
-			currentPoint++;
+		if (col.gameObject.tag == "Checkpoint") {
+			if (currentPoint< checkPoints.Length && col.gameObject.Equals (checkPoints [currentPoint])) {
+				print ("Checkpoint! " + checkPoints[currentPoint]);
+				currentPoint++;
+			}
 		}
+		if (col.gameObject.tag == "Finishline") {
+			if (currentLap == 0) {
+				currentLap++;
+				currentPoint = 0;
+			} else if (currentLap > maxLap) {
+				currentLap++;
+				currentPoint = 0;
+			} else if (currentLap == maxLap) {
+				currentPoint = 0;
+				AnnounceWinner ();
+			}
+		}
+	}
+
+	void AnnounceWinner() {
+		scorekeeper.RaceOver(gameObject);
 	}
 }
