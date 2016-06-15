@@ -26,7 +26,9 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	void Update () {
-		playerAcceleration ();
+		if (GetComponent<GroundCheck> ().GetIsGrounded()) {
+			playerAcceleration ();
+		}
 		playerTurning ();
 		DebugMoving (DEBUG);
 	}
