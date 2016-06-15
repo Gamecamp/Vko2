@@ -39,7 +39,6 @@ public class PlayerInput : MonoBehaviour {
 		if (Mathf.Abs (transform.InverseTransformDirection (rigidbody.velocity).x) > minimumSpeedForTurning || Mathf.Abs (transform.InverseTransformDirection (rigidbody.velocity).z) > minimumSpeedForTurning) {
 			myRotation = Input.GetAxis ("Horizontal") * Time.deltaTime * turnSpeed;
 		} else {
-			print ("YAMAN");
 			myRotation = Input.GetAxis ("Horizontal") * Time.deltaTime * turnSpeed * (Mathf.Abs (transform.InverseTransformDirection (rigidbody.velocity).x));
 		}
 
