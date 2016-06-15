@@ -6,6 +6,7 @@ public class PlayerInput : MonoBehaviour {
 	KeyCode playerAccelerateKey;
 	KeyCode playerDeccerelateKey;
 	Rigidbody rigidbody;
+	Scorekeeper scorekeeper;
 
 	float myRotation;
 	public float turnSpeed;
@@ -17,8 +18,11 @@ public class PlayerInput : MonoBehaviour {
 
 	private const bool DEBUG = true;
 
+
 	// Use this for initialization
 	void Start () {
+		scorekeeper = GameObject.Find ("Scorekeeper").GetComponent<Scorekeeper>();
+
 		playerAccelerateKey = KeyCode.W;
 		playerDeccerelateKey = KeyCode.S;
 		rigidbody = GetComponent<Rigidbody> ();
@@ -26,11 +30,13 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	void Update () {
-		if (GetComponent<GroundCheck> ().GetIsGrounded()) {
-			playerAcceleration ();
+		if (scorekeeper.gameGoing) {
+			if (GetComponent<GroundCheck> ().GetIsGrounded ()) {
+				playerAcceleration ();
+			}
+			playerTurning ();
+			DebugMoving (DEBUG);
 		}
-		playerTurning ();
-		DebugMoving (DEBUG);
 	}
 
 	void playerAcceleration() {

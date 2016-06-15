@@ -9,7 +9,7 @@ public class CheckPointChecker : MonoBehaviour {
 	public int maxPoint;
 
 	int currentLap;
-	public int maxLap;
+	int maxLaps;
 
 	Scorekeeper scorekeeper;
 
@@ -20,6 +20,7 @@ public class CheckPointChecker : MonoBehaviour {
 		currentLap = 0;
 		scorekeeper = GameObject.Find ("Scorekeeper").GetComponent<Scorekeeper> ();
 		maxPoint = checkPoints.Length;
+		maxLaps = scorekeeper.maxLaps;
 	}
 	
 	// Update is called once per frame
@@ -42,10 +43,10 @@ public class CheckPointChecker : MonoBehaviour {
 			if (currentLap == 0) {
 				currentLap++;
 				currentPoint = 0;
-			} else if (currentLap > maxLap) {
+			} else if (currentLap < maxLaps && currentPoint == maxPoint) {
 				currentLap++;
 				currentPoint = 0;
-			} else if (currentLap == maxLap) {
+			} else if (currentLap == maxLaps && currentPoint == maxPoint) {
 				currentPoint = 0;
 				AnnounceWinner ();
 			}

@@ -7,17 +7,17 @@ public class Scorekeeper : MonoBehaviour {
 	Text player1text;
 	Text timerText;
 
-	bool gameGoing;
+	public bool gameGoing;
 
 	float timePassed;
 	float startTime;
-	float maxLaps;
+	public int maxLaps;
 
 	public int winnerFontSize;
 	public int timerFontSize;
 
 	public GameObject player1;
-	public CheckPointChecker player1checkPoints;
+	CheckPointChecker player1checkPoints;
 
 	// Use this for initialization
 	void Start () {
@@ -30,7 +30,7 @@ public class Scorekeeper : MonoBehaviour {
 		player1 = GameObject.Find ("Player");
 		player1checkPoints = player1.GetComponent<CheckPointChecker> ();
 		player1text = GetComponent<Text> ();
-		maxLaps = player1checkPoints.maxLap;
+
 		winnerFontSize = 20;
 		timerFontSize = 14;
 
