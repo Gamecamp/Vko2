@@ -3,40 +3,52 @@ using System.Collections;
 
 public class PlayerInput : MonoBehaviour {
 
-	KeyCode playerAccelerateKey;
-	KeyCode playerDeccerelateKey;
-	Rigidbody rigidbody;
 	Scorekeeper scorekeeper;
 
-	float myRotation;
+	private KeyCode playerAccelerateKey;
+	private KeyCode playerDeccerelateKey;
+	private Rigidbody rigidbody;
+
+	private float myRotation;
 	public float turnSpeed;
 	public float torque;
 	public float torqueDeccerelationMultiplier;
 	public float minimumSpeedForTurning;
 
 	private Vector3 minimumTurnVelocity;
+	private bool isGrounded;
+	private float resetTime;
 
 	private const bool DEBUG = true;
+
+	CheckPointChecker checkPointChecker;
 
 
 	// Use this for initialization
 	void Start () {
 		scorekeeper = GameObject.Find ("Scorekeeper").GetComponent<Scorekeeper>();
+		checkPointChecker = GetComponent<CheckPointChecker> ();
 
 		playerAccelerateKey = KeyCode.W;
 		playerDeccerelateKey = KeyCode.S;
 		rigidbody = GetComponent<Rigidbody> ();
 		minimumTurnVelocity = new Vector3 (1, 1, 1);
+		resetTime = 0;
 	}
 
 	void Update () {
 		if (scorekeeper.gameGoing) {
-			if (GetComponent<GroundCheck> ().GetIsGrounded ()) {
+			isGrounded = GetComponent<GroundCheck> ().GetIsGrounded ();
+			print (isGrounded);
+
+			if (isGrounded) {
 				playerAcceleration ();
 			}
 			playerTurning ();
+			resetPosition ();
 			DebugMoving (DEBUG);
 		}
+
 	}
 
 	void playerAcceleration() {
@@ -53,6 +65,28 @@ public class PlayerInput : MonoBehaviour {
 
 		} else if (Input.GetKey (playerDeccerelateKey)) {
 			rigidbody.drag = 1.0f;
+		}
+	}
+
+	void resetPosition() {
+		if (!isGrounded) {
+			resetTime += Time.deltaTime;
+
+			if (resetTime > 3.0f) {
+				print ("reset");
+
+				if (checkPointChecker.GetCurrentPoint() > 0) {
+					transform.position = checkPointChecker.checkPoints [checkPointChecker.GetCurrentPoint () - 1].transform.position;
+					transform.rotation = checkPointChecker.checkPoints [checkPointChecker.GetCurrentPoint () - 1].transform.rotation;
+				} else {
+					transform.position = GameObject.Find ("Finishline").transform.position;
+				}
+				print ("current point :" + checkPointChecker.GetCurrentPoint ());
+
+				resetTime = 0;
+			}
+		} else {
+			resetTime = 0;
 		}
 	}
 
