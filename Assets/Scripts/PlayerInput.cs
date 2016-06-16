@@ -10,6 +10,8 @@ public class PlayerInput : MonoBehaviour {
 	private KeyCode playerTurnLeftKey;
 	private KeyCode playerTurnRightKey;
 	private Rigidbody rigidbody;
+	private Rigidbody groundCheckRB;
+	private GroundCheck groundCheck;
 
 	private float myRotation;
 	public float turnSpeed;
@@ -17,6 +19,8 @@ public class PlayerInput : MonoBehaviour {
 	public float torqueDeccerelationMultiplier;
 	public float minimumSpeedForTurning;
 
+
+	private string horizontalAxisName;
 	private Vector3 minimumTurnVelocity;
 	private bool isGrounded;
 	private float resetTime;
@@ -31,19 +35,32 @@ public class PlayerInput : MonoBehaviour {
 		scorekeeper = GameObject.Find ("Scorekeeper").GetComponent<Scorekeeper>();
 		checkPointChecker = GetComponent<CheckPointChecker> ();
 
-		playerAccelerateKey = KeyCode.W;
-		playerDeccerelateKey = KeyCode.S;
-		playerTurnLeftKey = KeyCode.A;
-		playerTurnLeftKey = KeyCode.D;
+		if (gameObject.name == "Player") {
+			playerAccelerateKey = KeyCode.W;
+			playerDeccerelateKey = KeyCode.S;
+			horizontalAxisName = "Horizontal";
+			groundCheckRB = GameObject.Find ("GroundCheckPlayer1").GetComponent<Rigidbody> ();
+			groundCheck = GameObject.Find ("GroundCheckPlayer1").GetComponent<GroundCheck>();
+		}
+
+		if (gameObject.name == "Player2") {
+			playerAccelerateKey = KeyCode.UpArrow;
+			playerDeccerelateKey = KeyCode.DownArrow;
+			horizontalAxisName = "Horizontal2";
+			groundCheckRB = GameObject.Find ("GroundCheckPlayer2").GetComponent<Rigidbody> ();
+			groundCheck = GameObject.Find ("GroundCheckPlayer2").GetComponent<GroundCheck>();
+		}
 
 		rigidbody = GetComponent<Rigidbody> ();
 		minimumTurnVelocity = new Vector3 (5f, 5f, 5f);
 		resetTime = 0;
+
+
 	}
 
 	void Update () {
 		if (scorekeeper.gameGoing) {
-			isGrounded = GameObject.Find("GroundCheck").GetComponent<GroundCheck> ().GetIsGrounded ();
+			isGrounded = groundCheck.GetIsGrounded ();
 			if (isGrounded) {
 				playerAcceleration ();
 			}
@@ -55,7 +72,7 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	void playerAcceleration() {
-		GameObject.Find("GroundCheck").GetComponent<Rigidbody>().drag = 0.6f;
+		groundCheckRB.drag = 0.6f;
 
 		if (Input.GetKey (playerAccelerateKey)) {
 
@@ -67,7 +84,7 @@ public class PlayerInput : MonoBehaviour {
 			rigidbody.AddRelativeForce(new Vector3(torque, 0, 0));
 
 		} else if (Input.GetKey (playerDeccerelateKey)) {
-			GameObject.Find("GroundCheck").GetComponent<Rigidbody>().drag = 1.0f;
+			groundCheckRB.drag = 1.0f;
 		}
 	}
 
@@ -96,7 +113,7 @@ public class PlayerInput : MonoBehaviour {
 
 	void playerTurning() {
 
-		myRotation = Input.GetAxis("Horizontal") * Time.deltaTime * turnSpeed;
+		myRotation = Input.GetAxis(horizontalAxisName) * Time.deltaTime * turnSpeed;
 
 		if (rigidbody.velocity.magnitude > minimumTurnVelocity.magnitude) {
 			transform.Rotate (0, myRotation, 0);
