@@ -37,8 +37,8 @@ public class CameraFollow : MonoBehaviour {
 		middlePoint = new Vector3 (middlePoint.x, (cameraDistance + margin) * distanceMultiplier, middlePoint.z);
 
 		//min distance zoom
-		if (middlePoint.y < 30) {
-			middlePoint = new Vector3 (middlePoint.x, 30, middlePoint.z);
+		if (middlePoint.y < 50) {
+			middlePoint = new Vector3 (middlePoint.x, 50, middlePoint.z);
 		}
 	}
 
