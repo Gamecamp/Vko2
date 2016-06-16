@@ -3,16 +3,12 @@ using System.Collections;
 
 public class PlayerInput : MonoBehaviour {
 
-<<<<<<< HEAD
-	KeyCode playerAccelerateKey;
-	KeyCode playerDeccerelateKey;
-	Rigidbody rigidbody;
 	Scorekeeper scorekeeper;
-=======
+
 	private KeyCode playerAccelerateKey;
 	private KeyCode playerDeccerelateKey;
 	private Rigidbody rigidbody;
->>>>>>> refs/remotes/origin/SimonOmaOksa
+
 
 	private float myRotation;
 	public float turnSpeed;
@@ -39,7 +35,7 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	void Update () {
-<<<<<<< HEAD
+
 		if (scorekeeper.gameGoing) {
 			if (GetComponent<GroundCheck> ().GetIsGrounded ()) {
 				playerAcceleration ();
@@ -47,7 +43,7 @@ public class PlayerInput : MonoBehaviour {
 			playerTurning ();
 			DebugMoving (DEBUG);
 		}
-=======
+
 		isGrounded = GetComponent<GroundCheck> ().GetIsGrounded ();
 		print (isGrounded);
 
@@ -57,7 +53,6 @@ public class PlayerInput : MonoBehaviour {
 		playerTurning ();
 		resetPosition ();
 		DebugMoving (DEBUG);
->>>>>>> refs/remotes/origin/SimonOmaOksa
 	}
 
 	void playerAcceleration() {
@@ -95,6 +90,7 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	void playerTurning() {
+		
 		myRotation = Input.GetAxis ("Horizontal") * Time.deltaTime * turnSpeed;
 
 		if (rigidbody.velocity.magnitude > minimumTurnVelocity.magnitude) {
