@@ -12,9 +12,9 @@ public class GroundCheck : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Mathf.Abs ((transform.eulerAngles.x + 1) % 360) > 2 || Mathf.Abs ((transform.eulerAngles.z + 1) % 360) > 2) {
+		/*if (Mathf.Abs ((transform.eulerAngles.x + 1) % 360) > 2 || Mathf.Abs ((transform.eulerAngles.z + 1) % 360) > 2) {
 			SetIsGrounded (false);
-		}
+		}*/
 	}
 
 	void OnCollisionStay(Collision col) {

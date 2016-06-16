@@ -37,15 +37,13 @@ public class PlayerInput : MonoBehaviour {
 		playerTurnLeftKey = KeyCode.D;
 
 		rigidbody = GetComponent<Rigidbody> ();
-		minimumTurnVelocity = new Vector3 (1, 1, 1);
+		minimumTurnVelocity = new Vector3 (5f, 5f, 5f);
 		resetTime = 0;
 	}
 
 	void Update () {
 		if (scorekeeper.gameGoing) {
-			isGrounded = GetComponent<GroundCheck> ().GetIsGrounded ();
-			print (isGrounded);
-
+			isGrounded = GameObject.Find("GroundCheck").GetComponent<GroundCheck> ().GetIsGrounded ();
 			if (isGrounded) {
 				playerAcceleration ();
 			}
@@ -57,7 +55,7 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	void playerAcceleration() {
-		rigidbody.drag = 0.6f;
+		GameObject.Find("GroundCheck").GetComponent<Rigidbody>().drag = 0.6f;
 
 		if (Input.GetKey (playerAccelerateKey)) {
 
@@ -69,7 +67,7 @@ public class PlayerInput : MonoBehaviour {
 			rigidbody.AddRelativeForce(new Vector3(torque, 0, 0));
 
 		} else if (Input.GetKey (playerDeccerelateKey)) {
-			rigidbody.drag = 1.0f;
+			GameObject.Find("GroundCheck").GetComponent<Rigidbody>().drag = 1.0f;
 		}
 	}
 
@@ -102,7 +100,9 @@ public class PlayerInput : MonoBehaviour {
 
 		if (rigidbody.velocity.magnitude > minimumTurnVelocity.magnitude) {
 			transform.Rotate (0, myRotation, 0);
-		} 
+		} else {
+			transform.Rotate (0, myRotation * (rigidbody.velocity.magnitude / minimumTurnVelocity.magnitude), 0);
+		}
 
 	}
 
