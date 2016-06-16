@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.IO;
 
 public class Scorekeeper : MonoBehaviour {
 
@@ -22,6 +23,9 @@ public class Scorekeeper : MonoBehaviour {
 	public GameObject player2;
 	CheckPointChecker player2checkPoints;
 
+	private bool player2Active;
+
+
 	// Use this for initialization
 	void Start () {
 		timerText = GameObject.Find ("Timer").GetComponent<Text> ();
@@ -34,12 +38,22 @@ public class Scorekeeper : MonoBehaviour {
 		player1checkPoints = player1.GetComponent<CheckPointChecker> ();
 		player1text = GetComponent<Text> ();
 
-		player2 = GameObject.Find ("Player2");
-		player2checkPoints = player2.GetComponent<CheckPointChecker> ();
-		player2text = GameObject.Find ("ScorekeepHelper").GetComponent<Text> ();
 
 		winnerFontSize = 20;
 		timerFontSize = 14;
+
+		try {
+			player2 = GameObject.Find ("Player2");
+			player2checkPoints = player2.GetComponent<CheckPointChecker> ();
+			player2text = GameObject.Find ("ScorekeepHelper").GetComponent<Text> ();
+			player2Active = true;
+		} catch(System.Exception e) {
+			player2Active = false;
+		}
+
+		print (player2Active);
+		
+
 
 	}
 	
@@ -51,10 +65,20 @@ public class Scorekeeper : MonoBehaviour {
 		}
 	}
 
+	public bool GetPlayer2Active() {
+		return player2Active;
+	}
+
 	public void RaceOver(GameObject winner) {
 		timerText.fontSize = winnerFontSize;
-		timerText.text = winner.name + " is the winner!\nTime: " + timePassed.ToString("##.##");
+
+		if (player2Active) {
+			timerText.text = winner.name + " is the winner!\nTime: " + timePassed.ToString ("##.##");
+		} else {
+			timerText.text = "Time: " + timePassed.ToString ("##.##");
+		}
 		gameGoing = false;
+
 	}
 
 	void CalculateAndUpdateTime() {
@@ -64,6 +88,10 @@ public class Scorekeeper : MonoBehaviour {
 
 	void UpdatePlayerStats() {
 		player1text.text = player1.name + "\n" + "Lap: " + player1checkPoints.GetCurrentLap () + "/" + maxLaps;
-		player2text.text = player2.name + "\n" + "Lap: " + player2checkPoints.GetCurrentLap () + "/" + maxLaps;
+
+		if (player2Active) {
+			player2text.text = player2.name + "\n" + "Lap: " + player2checkPoints.GetCurrentLap () + "/" + maxLaps;
+		}
 	}
+		
 }

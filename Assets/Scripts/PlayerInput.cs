@@ -52,7 +52,7 @@ public class PlayerInput : MonoBehaviour {
 		}
 
 		rigidbody = GetComponent<Rigidbody> ();
-		minimumTurnVelocity = new Vector3 (5f, 5f, 5f);
+		minimumTurnVelocity = new Vector3 (10f, 10f, 10f);
 		resetTime = 0;
 
 

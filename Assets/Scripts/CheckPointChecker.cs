@@ -55,6 +55,11 @@ public class CheckPointChecker : MonoBehaviour {
 				AnnounceWinner ();
 			}
 		}
+
+		if (currentLap == maxLaps && currentPoint == maxPoint - 1) {
+			GameObject.Find ("Main Camera").GetComponent<MuSick> ().SpeedUp ();
+			print ("speedy");
+		}
 	}
 
 	void AnnounceWinner() {
