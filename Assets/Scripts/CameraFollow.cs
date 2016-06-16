@@ -6,6 +6,7 @@ public class CameraFollow : MonoBehaviour {
 	public Transform player;
 	public Transform cube;
 	public float distanceMultiplier;
+	public float minimumDistance;
 
 	private Vector3 middlePoint;
 	private float distanceFromMiddlePoint;
@@ -37,8 +38,8 @@ public class CameraFollow : MonoBehaviour {
 		middlePoint = new Vector3 (middlePoint.x, (cameraDistance + margin) * distanceMultiplier, middlePoint.z);
 
 		//min distance zoom
-		if (middlePoint.y < 50) {
-			middlePoint = new Vector3 (middlePoint.x, 50, middlePoint.z);
+		if (middlePoint.y < minimumDistance) {
+			middlePoint = new Vector3 (middlePoint.x, minimumDistance, middlePoint.z);
 		}
 	}
 

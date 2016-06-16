@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerInput : MonoBehaviour {
+public class Player2Input : MonoBehaviour {
 
 	Scorekeeper scorekeeper;
 
 	private KeyCode playerAccelerateKey;
 	private KeyCode playerDeccerelateKey;
-	private KeyCode playerTurnLeftKey;
-	private KeyCode playerTurnRightKey;
+
+
+
 	private Rigidbody rigidbody;
 
 	private float myRotation;
@@ -31,11 +32,8 @@ public class PlayerInput : MonoBehaviour {
 		scorekeeper = GameObject.Find ("Scorekeeper").GetComponent<Scorekeeper>();
 		checkPointChecker = GetComponent<CheckPointChecker> ();
 
-		playerAccelerateKey = KeyCode.W;
-		playerDeccerelateKey = KeyCode.S;
-		playerTurnLeftKey = KeyCode.A;
-		playerTurnLeftKey = KeyCode.D;
-
+		playerAccelerateKey = KeyCode.UpArrow;
+		playerDeccerelateKey = KeyCode.DownArrow;
 		rigidbody = GetComponent<Rigidbody> ();
 		minimumTurnVelocity = new Vector3 (1, 1, 1);
 		resetTime = 0;
@@ -43,6 +41,7 @@ public class PlayerInput : MonoBehaviour {
 
 	void Update () {
 		if (scorekeeper.gameGoing) {
+			print ("going");
 			isGrounded = GetComponent<GroundCheck> ().GetIsGrounded ();
 			print (isGrounded);
 
@@ -61,7 +60,7 @@ public class PlayerInput : MonoBehaviour {
 
 		if (Input.GetKey (playerAccelerateKey)) {
 
-			if (!Input.GetKey (KeyCode.A) && !Input.GetKey (KeyCode.D)) {
+			if (!Input.GetKey (KeyCode.LeftArrow) && !Input.GetKey (KeyCode.RightArrow)) {
 				Vector3 velo = transform.InverseTransformDirection(rigidbody.velocity);
 				velo.z = velo.z * 0.98f;
 				rigidbody.velocity = transform.TransformDirection(velo);
@@ -85,7 +84,6 @@ public class PlayerInput : MonoBehaviour {
 					transform.rotation = checkPointChecker.checkPoints [checkPointChecker.GetCurrentPoint () - 1].transform.rotation;
 				} else {
 					transform.position = GameObject.Find ("Finishline").transform.position;
-					transform.rotation = GameObject.Find ("Finishline").transform.rotation;
 				}
 				print ("current point :" + checkPointChecker.GetCurrentPoint ());
 
@@ -97,8 +95,7 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	void playerTurning() {
-
-		myRotation = Input.GetAxis("Horizontal") * Time.deltaTime * turnSpeed;
+		myRotation = Input.GetAxis ("Horizontal2") * Time.deltaTime * turnSpeed;
 
 		if (rigidbody.velocity.magnitude > minimumTurnVelocity.magnitude) {
 			transform.Rotate (0, myRotation, 0);
@@ -107,7 +104,7 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	void DebugMoving(bool b) {
-		
+
 		if (b) {
 			Debug.DrawRay (transform.position, rigidbody.velocity, Color.red);
 			Debug.DrawRay (transform.position, gameObject.transform.right * 5f, Color.green);

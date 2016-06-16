@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Scorekeeper : MonoBehaviour {
 
 	Text player1text;
+	Text player2text;
 	Text timerText;
 
 	public bool gameGoing;
@@ -18,6 +19,8 @@ public class Scorekeeper : MonoBehaviour {
 
 	public GameObject player1;
 	CheckPointChecker player1checkPoints;
+	public GameObject player2;
+	CheckPointChecker player2checkPoints;
 
 	// Use this for initialization
 	void Start () {
@@ -30,6 +33,10 @@ public class Scorekeeper : MonoBehaviour {
 		player1 = GameObject.Find ("Player");
 		player1checkPoints = player1.GetComponent<CheckPointChecker> ();
 		player1text = GetComponent<Text> ();
+
+		player2 = GameObject.Find ("Player2");
+		player2checkPoints = player2.GetComponent<CheckPointChecker> ();
+		player2text = GameObject.Find ("ScorekeepHelper").GetComponent<Text> ();
 
 		winnerFontSize = 20;
 		timerFontSize = 14;
@@ -57,5 +64,6 @@ public class Scorekeeper : MonoBehaviour {
 
 	void UpdatePlayerStats() {
 		player1text.text = player1.name + "\n" + "Lap: " + player1checkPoints.GetCurrentLap () + "/" + maxLaps;
+		player2text.text = player2.name + "\n" + "Lap: " + player2checkPoints.GetCurrentLap () + "/" + maxLaps;
 	}
 }
