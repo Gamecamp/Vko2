@@ -6,7 +6,7 @@ public class CheckPointChecker : MonoBehaviour {
 	public GameObject[] checkPoints;
 
 	int currentPoint;
-	public int maxPoint;
+	int maxPoint;
 
 	int currentLap;
 	int maxLaps;
@@ -30,6 +30,10 @@ public class CheckPointChecker : MonoBehaviour {
 
 	public int GetCurrentLap() {
 		return currentLap;
+	}
+
+	public int GetCurrentPoint() {
+		return currentPoint;
 	}
 
 	void OnTriggerEnter(Collider col) {
