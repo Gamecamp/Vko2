@@ -98,6 +98,7 @@ public class PlayerInput : MonoBehaviour {
 				if (checkPointChecker.GetCurrentPoint() > 0) {
 					transform.position = checkPointChecker.checkPoints [checkPointChecker.GetCurrentPoint () - 1].transform.position;
 					transform.rotation = checkPointChecker.checkPoints [checkPointChecker.GetCurrentPoint () - 1].transform.rotation;
+					rigidbody.velocity = new Vector3 (0, 0, 0);
 				} else {
 					transform.position = GameObject.Find ("Finishline").transform.position;
 					transform.rotation = GameObject.Find ("Finishline").transform.rotation;

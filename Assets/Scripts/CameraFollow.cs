@@ -7,6 +7,7 @@ public class CameraFollow : MonoBehaviour {
 	public Transform cube;
 	public float distanceMultiplier;
 	public float minimumDistance;
+	public float maximumDistance;
 
 	private bool player2Active;
 	private Vector3 middlePoint;
@@ -46,11 +47,13 @@ public class CameraFollow : MonoBehaviour {
 		Vector3 vectorBetweenPlayers = cube.position - player.position;
 		middlePoint = player.position + 0.5f * vectorBetweenPlayers;
 
+		print (middlePoint.z);
+
 		distanceBetweenPlayers = vectorBetweenPlayers.magnitude;
 		cameraDistance = (distanceBetweenPlayers / 2.0f / aspectRatio) / tanFov;
 
 		float zDistance = Mathf.Abs (vectorBetweenPlayers.z);
-		distanceMultiplier = 1 + zDistance / 90;
+		distanceMultiplier = 1 + zDistance / 200;
 		margin = 2f;
 
 		middlePoint = new Vector3 (middlePoint.x, (cameraDistance + margin) * distanceMultiplier, middlePoint.z);
@@ -59,6 +62,11 @@ public class CameraFollow : MonoBehaviour {
 		if (middlePoint.y < minimumDistance) {
 			middlePoint = new Vector3 (middlePoint.x, minimumDistance, middlePoint.z);
 		}
+
+		if (middlePoint.y > maximumDistance) {
+			middlePoint = new Vector3 (middlePoint.x, maximumDistance, middlePoint.z);
+		}
+
 	}
 
 	void MoveCamera1Player() {
