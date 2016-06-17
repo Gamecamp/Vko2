@@ -25,6 +25,14 @@ public class Scorekeeper : MonoBehaviour {
 
 	private bool player2Active;
 
+	void Awake() {
+		if (GameObject.Find ("PlayerAmount").GetComponent<PlayerAmount> ().GetAmountOfPlayers () == 1) {
+			player2 = GameObject.Find ("Player2");
+			print (player2);
+			DestroyImmediate (player2);
+			print (player2);
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -34,6 +42,7 @@ public class Scorekeeper : MonoBehaviour {
 		startTime = Time.time;
 
 
+
 		player1 = GameObject.Find ("Player");
 		player1checkPoints = player1.GetComponent<CheckPointChecker> ();
 		player1text = GetComponent<Text> ();
@@ -41,6 +50,8 @@ public class Scorekeeper : MonoBehaviour {
 
 		winnerFontSize = 20;
 		timerFontSize = 14;
+
+
 
 		try {
 			player2 = GameObject.Find ("Player2");

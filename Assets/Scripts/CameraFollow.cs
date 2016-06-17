@@ -67,6 +67,10 @@ public class CameraFollow : MonoBehaviour {
 			middlePoint = new Vector3 (middlePoint.x, maximumDistance, middlePoint.z);
 		}
 
+<<<<<<< HEAD
+=======
+		middlePoint = new Vector3(middlePoint.x, 0.8f * middlePoint.y, middlePoint.z - (Mathf.Tan (Mathf.Deg2Rad * 30)) * middlePoint.y);
+>>>>>>> refs/remotes/origin/StartScreen
 	}
 
 	void MoveCamera1Player() {
